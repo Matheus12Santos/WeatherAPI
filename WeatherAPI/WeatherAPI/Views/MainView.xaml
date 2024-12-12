@@ -4,9 +4,26 @@
              x:Class="WeatherAPI.Views.MainView"
              Title="MainView">
     <VerticalStackLayout>
+        
         <Label 
             Text="Welcome to .NET MAUI!"
             VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            HorizontalOptions="Center"
+            FontSize="Header"/>
+        <SearchBar Placeholder="Inserir local" SearchCommand="{Binding SearchButtonPressedCommand}" Text="{Binding CityName}"/>
+        <Label
+            Text="{Binding CityName}"/>
+
+        <Label Text="{Binding Temp}" />
+        <!--<Label Text="{Binding Pressure}" />
+        <Label Text="{Binding Humidity}" />
+        <Label Text="{Binding WeatherId}" />
+        <Label Text="{Binding Clime}" />
+        <Label Text="{Binding ClimeDescription}" />
+        <Label Text="{Binding ClimeIcon}" />
+        <Label Text="{Binding Wind}" />
+        <Label Text="{Binding Deg}" />
+        <Label Text="{Binding Gust}" />-->
+
     </VerticalStackLayout>
 </ContentPage>

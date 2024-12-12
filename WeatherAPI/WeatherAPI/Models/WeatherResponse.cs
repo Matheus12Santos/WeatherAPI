@@ -9,21 +9,8 @@ namespace WeatherAPI.Models
 {
     public class WeatherResponse
     {
-        [JsonPropertyName("temp")]
-        public string Temperature;
-
-        [JsonPropertyName("humidity")]
-        public string Humidity;
-
-        [JsonPropertyName("wind_speed")]
-        public string Wind;
-
-        [JsonPropertyName("sunrise")]
-        public string Sunrise;
-
-        [JsonPropertyName("sunset")]
-        public string Sunset;
-
-        public List<WeatherModel> WeatherModel { get; set; }
+        public Main? main { get; set; }
+        public Weather? weather { get; set; }
+        public Wind? wind { get; set; }
     }
 }

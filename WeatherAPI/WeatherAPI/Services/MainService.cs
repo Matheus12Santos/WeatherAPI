@@ -11,9 +11,9 @@ namespace WeatherAPI.Services
 {
     public class MainService
     {
-        private HttpClient _httpClient;
-        private string apiKey = "";
-        private WeatherResponse weatherResponse;
+        private readonly HttpClient _httpClient;
+        private string apiKey = "33b02ef843560aff01c77e421396b9bb";
+        private WeatherResponse? weatherResponse;
         private JsonSerializerOptions jsonSerializerOptions;
 
         public MainService() 
@@ -26,7 +26,7 @@ namespace WeatherAPI.Services
             };
         }
 
-        public async Task<WeatherResponse> GetWeatherByCity(string cityName)
+        public async Task<WeatherResponse?> GetWeatherByCity(string cityName)
         {
             var url = $"https://api.openweathermap.org/data/2.5/weather?q={cityName}&appid={apiKey}";
             try
@@ -35,10 +35,16 @@ namespace WeatherAPI.Services
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonResponse = await response.Content.ReadAsStringAsync();
-                    weatherResponse = JsonSerializer.Deserialize<WeatherResponse>(jsonResponse, jsonSerializerOptions);
-                    if (weatherResponse == null)
+                    weatherResponse = JsonSerializer.Deserialize<WeatherResponse>(jsonResponse, jsonSerializerOptions) ?? new WeatherResponse();
+
+                    // Verifique se 'main' foi preenchido corretamente
+                    if (weatherResponse.main == null)
                     {
-                        Console.WriteLine("Erro na deserialização da resposta da API: o objeto retornado é nulo.");
+                        Console.WriteLine("Erro: 'main' não foi encontrado na resposta.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Temperatura: {weatherResponse.main.Temp}");
                     }
                 }
                 else
@@ -46,10 +52,11 @@ namespace WeatherAPI.Services
                     throw new Exception("Erro ao obter os dados do clima. ERRO: " + response.StatusCode);
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 throw new Exception("Falha na requisição da API.", ex);
             }
+            System.Diagnostics.Debug.WriteLine($"Resposta da API: {weatherResponse}");
             return weatherResponse;
         }
     }
